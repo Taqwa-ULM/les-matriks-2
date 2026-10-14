@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Interaktif: MATRIKS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- KaTeX CSS & JS for rendering latex matrices nicely -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#095185',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .katex-display { margin: 0.5em 0 !important; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col lg:flex-row">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden bg-slate-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <div class="flex items-center space-x-3">
+            <div class="bg-indigo-600 p-2 rounded-lg text-white font-bold">
+                <i class="fa-solid fa-border-all"></i>
+            </div>
+            <span class="font-bold text-lg tracking-wide">MatriksLesPrivat</span>
+        </div>
+        <button id="mobile-menu-btn" class="text-slate-300 hover:text-white text-2xl focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out w-72 bg-slate-900 text-slate-300 z-40 flex flex-col justify-between shadow-xl">
+        <div>
+            <!-- Logo Header -->
+            <div class="p-6 border-b border-slate-800 hidden lg:flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl text-white font-bold text-xl shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-border-all"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-white text-lg leading-tight">Matriks Master</h1>
+                    <p class="text-xs text-indigo-400 font-medium">Modul Les Privat Interaktif</p>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="p-4 space-y-2">
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Main Menu</p>
+                
+                <button id="nav-materi" onclick="switchTab('materi')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition font-medium text-white bg-indigo-600 shadow-lg shadow-indigo-600/30">
+                    <i class="fa-solid fa-book-open text-lg"></i>
+                    <span>Materi Lengkap</span>
+                </button>
+
+                <button id="nav-kuis" onclick="switchTab('kuis')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition font-medium text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-pen-to-square text-lg"></i>
+                    <span>Latihan Soal (20)</span>
+                </button>
+            </nav>
+
+            <!-- Sub-Materi Fast Links (Only visible when in materi view) -->
+            <div id="sub-materi-links" class="px-4 py-2 space-y-1 text-sm border-t border-slate-800 mt-4">
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Pintas Materi</p>
+                <a href="#sub-pengertian" class="block px-3 py-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800/50 transition"><i class="fa-solid fa-angle-right text-xs mr-2"></i>Pengertian & Ordo</a>
+                <a href="#sub-jenis" class="block px-3 py-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800/50 transition"><i class="fa-solid fa-angle-right text-xs mr-2"></i>Jenis-jenis Matriks</a>
+                <a href="#sub-operasi" class="block px-3 py-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800/50 transition"><i class="fa-solid fa-angle-right text-xs mr-2"></i>Operasi Matriks</a>
+                <a href="#sub-determinan" class="block px-3 py-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800/50 transition"><i class="fa-solid fa-angle-right text-xs mr-2"></i>Determinan (2x2 & 3x3)</a>
+                <a href="#sub-invers" class="block px-3 py-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800/50 transition"><i class="fa-solid fa-angle-right text-xs mr-2"></i>Invers & Persamaan</a>
+                <a href="#sub-kalkulator" class="block px-3 py-1.5 rounded-lg text-amber-400 hover:text-amber-300 hover:bg-amber-900/20 transition font-medium"><i class="fa-solid fa-calculator text-xs mr-2"></i>Kalkulator Matriks Live</a>
+            </div>
+        </div>
+
+        <!-- Tutor Info Badge -->
+        <div class="p-4 border-t border-slate-800">
+            <div class="bg-slate-800/60 p-3 rounded-xl flex items-center space-x-3">
+                <div class="bg-indigo-500/20 text-indigo-400 p-2 rounded-lg">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-slate-200">Mode Les Privat</p>
+                    <p class="text-[11px] text-slate-400">Siap mendampingi siswa</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Overlay for Mobile Sidebar -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-30 hidden lg:hidden"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-6xl mx-auto w-full p-4 md:p-8 custom-scrollbar">
+
+        <!-- ================= MATERI VIEW ================= -->
+        <div id="view-materi" class="space-y-10">
+            
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">Modul Belajar Ringkas</span>
+                    <h2 class="text-2xl md:text-4xl font-extrabold mt-3 leading-tight">Konsep & Operasi MATRIKS</h2>
+                    <p class="text-indigo-100 mt-2 text-sm md:text-base">Dipandu secara terstruktur untuk pembelajaran mandiri atau pendampingan les privat. Pahami rumus dasar, contoh soal, lalu uji pemahaman di menu latihan!</p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-[180px] pointer-events-none select-none">
+                    <i class="fa-solid fa-table-cells"></i>
+                </div>
+            </div>
+
+            <!-- Sub 1: Pengertian & Ordo -->
+            <section id="sub-pengertian" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 scroll-mt-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-4">
+                    <span class="w-8 h-8 bg-indigo-100 text-indigo-600 font-bold rounded-lg flex items-center justify-center text-sm">1</span>
+                    <h3 class="text-xl font-bold text-slate-900">Pengertian, Ordo, & Elemen Matriks</h3>
+                </div>
+                <p class="text-slate-600 leading-relaxed mb-4">
+                    <strong>Matriks</strong> adalah susunan bilangan yang diatur menurut <em>baris</em> (horizontal) dan <em>kolom</em> (vertikal) di dalam tanda kurung biasa $( )$ atau kurung siku $[ ]$.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-semibold text-indigo-700 mb-2 text-sm"><i class="fa-solid fa-ruler-combined mr-1"></i> Ordo Matriks</h4>
+                        <p class="text-sm text-slate-600">Ukuran matriks dinyatakan sebagai $m \times n$, di mana $m$ = jumlah baris dan $n$ = jumlah kolom.</p>
+                        <div class="mt-3 text-center bg-white p-3 rounded-lg border border-slate-200">
+                            $$A_{3 \times 2} = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \\ a_{31} & a_{32} \end{pmatrix}$$
+                            <p class="text-xs text-slate-500 mt-1">Matriks $A$ mempunyai 3 baris dan 2 kolom (Ordo $3 \times 2$).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-semibold text-indigo-700 mb-2 text-sm"><i class="fa-solid fa-bullseye mr-1"></i> Elemen Matriks ($a_{ij}$)</h4>
+                        <p class="text-sm text-slate-600">Simbol $a_{ij}$ menunjukkan elemen matriks pada <strong>baris ke-$i$</strong> dan <strong>kolom ke-$j$</strong>.</p>
+                        <div class="mt-3 text-center bg-white p-3 rounded-lg border border-slate-200">
+                            $$B = \begin{pmatrix} 5 & -3 \\ 8 & 2 \end{pmatrix}$$
+                            <p class="text-xs text-slate-500 mt-1">Contoh: Elemen $b_{12} = -3$ (Baris 1, Kolom 2) dan $b_{21} = 8$ (Baris 2, Kolom 1).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sub 2: Jenis-jenis Matriks -->
+            <section id="sub-jenis" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 scroll-mt-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-4">
+                    <span class="w-8 h-8 bg-indigo-100 text-indigo-600 font-bold rounded-lg flex items-center justify-center text-sm">2</span>
+                    <h3 class="text-xl font-bold text-slate-900">Jenis-jenis Matriks Khusus</h3>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-sm">Matriks Nol ($O$)</h4>
+                        <p class="text-xs text-slate-500 mt-1">Semua elemen bernilai 0.</p>
+                        <div class="text-center my-2">$$\begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}$$</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-sm">Matriks Persegi</h4>
+                        <p class="text-xs text-slate-500 mt-1">Jumlah baris = jumlah kolom ($n \times n$).</p>
+                        <div class="text-center my-2">$$\begin{pmatrix} 1 & 4 \\ 2 & 5 \end{pmatrix}$$</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-sm">Matriks Identitas ($I$)</h4>
+                        <p class="text-xs text-slate-500 mt-1">Diagonal utama = 1, sisanya 0.</p>
+                        <div class="text-center my-2">$$I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-sm">Transpose Matriks ($A^T$)</h4>
+                        <p class="text-xs text-slate-500 mt-1">Tukar baris menjadi kolom.</p>
+                        <div class="text-center my-2">$$A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} \implies A^T = \begin{pmatrix} 1 & 3 \\ 2 & 4 \end{pmatrix}$$</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sub 3: Operasi Matriks -->
+            <section id="sub-operasi" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 scroll-mt-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-4">
+                    <span class="w-8 h-8 bg-indigo-100 text-indigo-600 font-bold rounded-lg flex items-center justify-center text-sm">3</span>
+                    <h3 class="text-xl font-bold text-slate-900">Operasi Hitung Matriks</h3>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Penjumlahan & Pengurangan -->
+                    <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                        <h4 class="font-bold text-slate-800">A. Penjumlahan & Pengurangan</h4>
+                        <p class="text-sm text-slate-600 mt-1">
+                            <strong>Syarat:</strong> Kedua matriks harus memiliki **ordo yang sama**. Dijumlahkan/dikurangkan pada elemen-elemen yang seletak.
+                        </p>
+                        <div class="bg-indigo-50/50 p-3 rounded-xl mt-2 text-sm text-center">
+                            $$\begin{pmatrix} a & b \\ c & d \end{pmatrix} \pm \begin{pmatrix} e & f \\ g & h \end{pmatrix} = \begin{pmatrix} a \pm e & b \pm f \\ c \pm g & d \pm h \end{pmatrix}$$
+                        </div>
+                    </div>
+
+                    <!-- Perkalian Skalar -->
+                    <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                        <h4 class="font-bold text-slate-800">B. Perkalian Skalar (Angka biasa dengan Matriks)</h4>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Semua elemen didalam matriks dikalikan dengan bilangan skalar $k$.
+                        </p>
+                        <div class="bg-indigo-50/50 p-3 rounded-xl mt-2 text-sm text-center">
+                            $$k \cdot \begin{pmatrix} a & b \\ c & d \end{pmatrix} = \begin{pmatrix} k \cdot a & k \cdot b \\ k \cdot c & k \cdot d \end{pmatrix}$$
+                        </div>
+                    </div>
+
+                    <!-- Perkalian Matriks x Matriks -->
+                    <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                        <h4 class="font-bold text-slate-800 text-emerald-800">C. Perkalian Matriks $\times$ Matriks (Penting!)</h4>
+                        <p class="text-sm text-slate-600 mt-1">
+                            <strong>Syarat:</strong> Jumlah **Kolom Matriks Pertama** = Jumlah **Baris Matriks Kedua**. <br>
+                            Aturan: <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-semibold text-xs">Baris $\times$ Kolom</span>
+                        </p>
+                        <div class="bg-emerald-50/60 p-4 rounded-xl mt-2 text-sm overflow-x-auto">
+                            $$\begin{pmatrix} a & b \\ c & d \end{pmatrix} \times \begin{pmatrix} e & f \\ g & h \end{pmatrix} = \begin{pmatrix} (a \cdot e + b \cdot g) & (a \cdot f + b \cdot h) \\ (c \cdot e + d \cdot g) & (c \cdot f + d \cdot h) \end{pmatrix}$$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sub 4: Determinan -->
+            <section id="sub-determinan" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 scroll-mt-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-4">
+                    <span class="w-8 h-8 bg-indigo-100 text-indigo-600 font-bold rounded-lg flex items-center justify-center text-sm">4</span>
+                    <h3 class="text-xl font-bold text-slate-900">Determinan Matriks ($\det(A)$ atau $|A|$)</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Ordo 2x2 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <span class="bg-indigo-600 text-white text-xs px-2.5 py-1 rounded-md font-bold">Ordo 2 x 2</span>
+                        <p class="text-sm text-slate-600 mt-2">Dihitung dari perkalian diagonal utama dikurangi diagonal sekunder.</p>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 my-3 text-center">
+                            $$A = \begin{pmatrix} a & b \\ c & d \end{pmatrix} \implies \det(A) = a \cdot d - b \cdot c$$
+                        </div>
+                        <p class="text-xs text-slate-500"><strong>Catatan:</strong> Jika $\det(A) = 0$, maka matriks disebut **Matriks Singular** (tidak punya invers).</p>
+                    </div>
+
+                    <!-- Ordo 3x3 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <span class="bg-indigo-600 text-white text-xs px-2.5 py-1 rounded-md font-bold">Ordo 3 x 3 (Metode Sarrus)</span>
+                        <p class="text-sm text-slate-600 mt-2">Salin 2 kolom pertama ke sebelah kanan, lalu hitung jumlah perkalian diagonal.</p>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 my-3 text-xs text-center overflow-x-auto">
+                            $$\det(A) = (aei + bfg + cdh) - (ceg + afh + bdi)$$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sub 5: Invers Matriks & Persamaan -->
+            <section id="sub-invers" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 scroll-mt-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-4">
+                    <span class="w-8 h-8 bg-indigo-100 text-indigo-600 font-bold rounded-lg flex items-center justify-center text-sm">5</span>
+                    <h3 class="text-xl font-bold text-slate-900">Invers Matriks & Persamaan Matriks</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-indigo-50/40 p-4 rounded-xl border border-indigo-100">
+                        <h4 class="font-bold text-indigo-900 text-sm mb-1">Rumus Invers Ordo 2x2 ($A^{-1}$)</h4>
+                        <div class="text-center my-2">
+                            $$A = \begin{pmatrix} a & b \\ c & d \end{pmatrix} \implies A^{-1} = \frac{1}{\det(A)} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$$
+                        </div>
+                        <p class="text-xs text-slate-600 text-center">Di mana $\det(A) = ad - bc \neq 0$. Posisi $a$ & $d$ ditukar, $b$ & $c$ dikali $(-1)$.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h5 class="font-bold text-slate-800 text-sm mb-1">Persamaan $A \cdot X = B$</h5>
+                            <p class="text-xs text-slate-600 mb-2">Jika matriks $A$ berada di depan $X$:</p>
+                            <div class="bg-white p-2 rounded text-center border text-sm font-semibold text-indigo-600">
+                                $$X = A^{-1} \cdot B$$
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h5 class="font-bold text-slate-800 text-sm mb-1">Persamaan $X \cdot A = B$</h5>
+                            <p class="text-xs text-slate-600 mb-2">Jika matriks $A$ berada di belakang $X$:</p>
+                            <div class="bg-white p-2 rounded text-center border text-sm font-semibold text-indigo-600">
+                                $$X = B \cdot A^{-1}$$
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sub 6: LIVE INTERACTIVE CALCULATOR FOR LEARNING BY DOING -->
+            <section id="sub-kalkulator" class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 shadow-xl scroll-mt-6">
+                <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-6">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-9 h-9 bg-amber-500 text-slate-900 font-bold rounded-lg flex items-center justify-center text-base">
+                            <i class="fa-solid fa-calculator"></i>
+                        </span>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Kalkulator Matriks Live (Ordo 2x2)</h3>
+                            <p class="text-xs text-slate-400">Coba ubah angka di bawah untuk langsung melihat hasil perhitungan secara realtime!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
+                    <!-- Input Matriks A -->
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                        <h4 class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-2 text-center">Matriks A</h4>
+                        <div class="grid grid-cols-2 gap-2 max-w-[160px] mx-auto">
+                            <input type="number" id="calc-a11" value="3" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-indigo-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                            <input type="number" id="calc-a12" value="2" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-indigo-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                            <input type="number" id="calc-a21" value="1" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-indigo-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                            <input type="number" id="calc-a22" value="4" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-indigo-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                        </div>
+                    </div>
+
+                    <!-- Operator Select -->
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <label class="text-xs text-slate-400">Pilih Operasi:</label>
+                        <select id="calc-op" onchange="calculateMatrixLive()" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl border border-indigo-400 focus:outline-none cursor-pointer">
+                            <option value="add">Tambah (A + B)</option>
+                            <option value="subtract">Kurang (A - B)</option>
+                            <option value="multiply">Perkalian (A × B)</option>
+                            <option value="detA">Determinan (det A)</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Matriks B -->
+                    <div id="calc-b-container" class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                        <h4 class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-2 text-center">Matriks B</h4>
+                        <div class="grid grid-cols-2 gap-2 max-w-[160px] mx-auto">
+                            <input type="number" id="calc-b11" value="1" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-emerald-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                            <input type="number" id="calc-b12" value="5" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-emerald-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                            <input type="number" id="calc-b21" value="0" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-emerald-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                            <input type="number" id="calc-b22" value="2" class="w-full text-center bg-slate-900 text-white border border-slate-600 rounded p-2 focus:border-emerald-500 focus:outline-none font-bold" oninput="calculateMatrixLive()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Box -->
+                <div class="mt-6 bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+                    <p class="text-xs text-slate-400 mb-1">Hasil Perhitungan:</p>
+                    <div id="calc-result" class="text-lg md:text-xl font-bold text-amber-400 min-h-[50px] flex items-center justify-center">
+                        <!-- KaTeX Result Rendered Here -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ================= KUIS VIEW ================= -->
+        <div id="view-kuis" class="hidden space-y-6">
+            
+            <!-- Quiz Header Bar -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Latihan Soal Interaktif Matriks</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Uji pemahaman siswa dengan 20 soal variatif lengkap dengan pembahasan.</p>
+                </div>
+                <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-end">
+                    <div class="bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 text-indigo-700 text-xs font-bold flex items-center">
+                        <i class="fa-solid fa-list-check mr-1.5"></i>
+                        <span id="quiz-progress-text">Soal 1 dari 20</span>
+                    </div>
+                    <button onclick="resetQuiz()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg font-medium transition">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Ulangi Kuis
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Numbers Grid Palette -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                <p class="text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">Navigasi Nomor Soal:</p>
+                <div id="question-palette" class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                    <!-- Palette items generated by JS -->
+                </div>
+            </div>
+
+            <!-- Active Question Card -->
+            <div id="question-card" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6 relative">
+                
+                <!-- Question Title & Content -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span id="question-badge" class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                            Soal #1
+                        </span>
+                        <span id="topic-badge" class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-medium">
+                            Ordo & Elemen
+                        </span>
+                    </div>
+
+                    <div id="question-text" class="text-slate-800 font-medium text-base md:text-lg leading-relaxed pt-2">
+                        <!-- KaTeX Question Rendered Here -->
+                    </div>
+                </div>
+
+                <!-- Multiple Choice Options -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options generated dynamically -->
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-5">
+                    <button id="btn-prev" onclick="navigateQuestion(-1)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition flex items-center">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Sebelumnya
+                    </button>
+
+                    <div class="flex items-center space-x-2">
+                        <button id="btn-check" onclick="checkAnswer()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center">
+                            <i class="fa-solid fa-circle-check mr-2"></i> Cek Jawaban
+                        </button>
+                    </div>
+
+                    <button id="btn-next" onclick="navigateQuestion(1)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition flex items-center">
+                        Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- Pembahasan Collapsible Box -->
+                <div id="pembahasan-box" class="hidden bg-amber-50/80 border border-amber-200 rounded-xl p-5 mt-4 space-y-2">
+                    <div class="flex items-center text-amber-800 font-bold text-sm">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-2 text-base"></i> Pembahasan Langkah demi Langkah:
+                    </div>
+                    <div id="pembahasan-text" class="text-slate-700 text-sm leading-relaxed">
+                        <!-- Rendered Math Explanation -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Quiz Summary View (Hidden by default) -->
+            <div id="quiz-summary-card" class="hidden bg-white rounded-2xl p-8 shadow-lg border border-slate-200 text-center space-y-6">
+                <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-extrabold text-slate-900">Kuis Selesai!</h3>
+                    <p class="text-sm text-slate-500 mt-1">Berikut adalah hasil evaluasi pengerjaan soal matriks kamu:</p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 max-w-md mx-auto">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <p class="text-xs text-slate-500 font-medium">Skor Akhir</p>
+                        <p id="summary-score" class="text-2xl font-black text-indigo-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                        <p class="text-xs text-emerald-600 font-medium">Benar</p>
+                        <p id="summary-correct" class="text-2xl font-black text-emerald-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-rose-50 p-4 rounded-xl border border-rose-100">
+                        <p class="text-xs text-rose-600 font-medium">Salah</p>
+                        <p id="summary-wrong" class="text-2xl font-black text-rose-600 mt-1">0</p>
+                    </div>
+                </div>
+
+                <div id="summary-feedback" class="text-sm font-semibold text-slate-700 bg-slate-100 p-3 rounded-xl max-w-md mx-auto">
+                    <!-- Dynamic feedback string -->
+                </div>
+
+                <div class="pt-4 flex justify-center space-x-4">
+                    <button onclick="reviewQuiz()" class="px-5 py-2.5 bg-slate-800 text-white rounded-xl text-sm font-semibold hover:bg-slate-900 transition">
+                        <i class="fa-solid fa-eye mr-2"></i> Tinjau Pembahasan
+                    </button>
+                    <button onclick="resetQuiz()" class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/30">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Coba Lagi
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // --- 20 SOAL MATRIKS LENGKAP DENGAN PEMBAHASAN LATEX ---
+        const quizData = [
+            {
+                topic: "Ordo & Elemen",
+                question: "Diketahui matriks $A = \\begin{pmatrix} 2 & -3 \\\\ 5 & 1 \\\\ 0 & 4 \\end{pmatrix}$. Tentukan ordo matriks $A$ dan nilai elemen $a_{21} + a_{32}$!",
+                options: [
+                    "Ordo $3 \\times 2$ dan $9$",
+                    "Ordo $2 \\times 3$ dan $9$",
+                    "Ordo $3 \\times 2$ dan $2$",
+                    "Ordo $2 \\times 3$ dan $-3$",
+                    "Ordo $3 \\times 2$ dan $5$"
+                ],
+                correct: 0,
+                explanation: "Matriks $A$ memiliki **3 baris** dan **2 kolom**, sehingga ordonya $3 \\times 2$.<br>Elemen $a_{21}$ (baris 2, kolom 1) $= 5$.<br>Elemen $a_{32}$ (baris 3, kolom 2) $= 4$.<br>Maka, $a_{21} + a_{32} = 5 + 4 = 9$."
+            },
+            {
+                topic: "Transpose Matriks",
+                question: "Jika matriks $A = \\begin{pmatrix} 3 & 1 & -2 \\\\ 0 & 4 & 5 \\end{pmatrix}$, tentukan matriks transpose $A^T$!",
+                options: [
+                    "$\\begin{pmatrix} 3 & 0 \\\\ 1 & 4 \\\\ -2 & 5 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 0 & 3 \\\\ 4 & 1 \\\\ 5 & -2 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -2 & 5 \\\\ 1 & 4 \\\\ 3 & 0 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & 4 \\\\ 1 & 5 \\\\ -2 & 0 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & 1 \\\\ -2 & 0 \\\\ 4 & 5 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "Transpose matriks ($A^T$) diperoleh dengan menukar elemen baris menjadi kolom.<br>Baris 1 $(3, 1, -2)$ menjadi Kolom 1.<br>Baris 2 $(0, 4, 5)$ menjadi Kolom 2.<br>Hasilnya: $A^T = \\begin{pmatrix} 3 & 0 \\\\ 1 & 4 \\\\ -2 & 5 \\end{pmatrix}$."
+            },
+            {
+                topic: "Kesamaan Matriks",
+                question: "Diketahui kesamaan matriks $\\begin{pmatrix} x+y & 2 \\\\ 4 & x-y \\end{pmatrix} = \\begin{pmatrix} 8 & 2 \\\\ 4 & 2 \\end{pmatrix}$. Tentukan nilai $x \\cdot y$!",
+                options: ["10", "12", "15", "16", "20"],
+                correct: 2,
+                explanation: "Dari kesamaan matriks diperoleh:<br>1) $x + y = 8$<br>2) $x - y = 2$<br><br>Jumlahkan kedua persamaan: $2x = 10 \\implies x = 5$.<br>Substitusi $x = 5$ ke pers (1): $5 + y = 8 \\implies y = 3$.<br>Maka, $x \\cdot y = 5 \\cdot 3 = 15$."
+            },
+            {
+                topic: "Operasi Matriks",
+                question: "Diketahui $A = \\begin{pmatrix} 2 & -1 \\\\ 3 & 4 \\end{pmatrix}$ dan $B = \\begin{pmatrix} 1 & 5 \\\\ -2 & 3 \\end{pmatrix}$. Hasil dari $2A - B$ adalah...",
+                options: [
+                    "$\\begin{pmatrix} 3 & -7 \\\\ 8 & 5 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & 3 \\\\ 8 & 5 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 1 & -6 \\\\ 5 & 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & -7 \\\\ 4 & 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 5 & -7 \\\\ 8 & 5 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "Hitung $2A = 2 \\cdot \\begin{pmatrix} 2 & -1 \\\\ 3 & 4 \\end{pmatrix} = \\begin{pmatrix} 4 & -2 \\\\ 6 & 8 \\end{pmatrix}$.<br><br>Lalu kurangkan dengan $B$:<br>$2A - B = \\begin{pmatrix} 4-1 & -2-5 \\\\ 6-(-2) & 8-3 \\end{pmatrix} = \\begin{pmatrix} 3 & -7 \\\\ 8 & 5 \\end{pmatrix}$."
+            },
+            {
+                topic: "Perkalian Matriks",
+                question: "Jika $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ dan $B = \\begin{pmatrix} 2 & 0 \\\\ -1 & 3 \\end{pmatrix}$, hasil perkalian $A \\times B$ adalah...",
+                options: [
+                    "$\\begin{pmatrix} 0 & 6 \\\\ 2 & 12 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 2 & 6 \\\\ 3 & 12 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 0 & 6 \\\\ 5 & 12 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 2 & 0 \\\\ -3 & 12 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 0 & 8 \\\\ 2 & 10 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "Perkalian baris $\\times$ kolom:<br>" +
+                "Baris 1 $\\times$ Kolom 1: $1(2) + 2(-1) = 0$<br>" +
+                "Baris 1 $\\times$ Kolom 2: $1(0) + 2(3) = 6$<br>" +
+                "Baris 2 $\\times$ Kolom 1: $3(2) + 4(-1) = 2$<br>" +
+                "Baris 2 $\\times$ Kolom 2: $3(0) + 4(3) = 12$<br>" +
+                "Maka $A \\times B = \\begin{pmatrix} 0 & 6 \\\\ 2 & 12 \\end{pmatrix}$."
+            },
+            {
+                topic: "Perkalian Matriks",
+                question: "Hasil perkalian matriks $\\begin{pmatrix} 2 & 3 \\\\ 1 & 4 \\end{pmatrix} \\begin{pmatrix} 1 \\\\ -2 \\end{pmatrix}$ adalah...",
+                options: [
+                    "$\\begin{pmatrix} -4 \\\\ -7 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -4 & -7 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 8 \\\\ -7 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -4 \\\\ 7 \\end{pmatrix}$",
+                    "Matriks tidak dapat dikalikan"
+                ],
+                correct: 0,
+                explanation: "Matriks pertama berordo $2 \\times 2$, kedua $2 \\times 1$. Hasil akhir berordo $2 \\times 1$.<br>" +
+                "Baris 1: $2(1) + 3(-2) = 2 - 6 = -4$<br>" +
+                "Baris 2: $1(1) + 4(-2) = 1 - 8 = -7$<br>" +
+                "Hasil: $\\begin{pmatrix} -4 \\\\ -7 \\end{pmatrix}$."
+            },
+            {
+                topic: "Determinan 2x2",
+                question: "Determinan dari matriks $A = \\begin{pmatrix} 5 & 2 \\\\ 4 & 3 \\end{pmatrix}$ adalah...",
+                options: ["23", "15", "7", "-7", "8"],
+                correct: 2,
+                explanation: "Rumus determinan ordo 2x2: $\\det(A) = ad - bc$.<br>$\\det(A) = (5 \\cdot 3) - (2 \\cdot 4) = 15 - 8 = 7$."
+            },
+            {
+                topic: "Matriks Singular",
+                question: "Diketahui matriks $A = \\begin{pmatrix} x & 6 \\\\ 2 & 3 \\end{pmatrix}$ adalah matriks singular. Nilai $x$ adalah...",
+                options: ["2", "3", "4", "6", "12"],
+                correct: 2,
+                explanation: "Matriks singular adalah matriks yang nilai determinannya **sama dengan nol** ($\\det(A) = 0$).<br>" +
+                "$\\det(A) = 3x - (6 \\cdot 2) = 0$<br>" +
+                "$3x - 12 = 0 \\implies 3x = 12 \\implies x = 4$."
+            },
+            {
+                topic: "Determinan 3x3",
+                question: "Nilai determinan dari matriks $A = \\begin{pmatrix} 1 & 2 & 0 \\\\ 0 & 3 & 1 \\\\ 2 & 1 & 1 \\end{pmatrix}$ adalah...",
+                options: ["4", "5", "6", "7", "8"],
+                correct: 2,
+                explanation: "Gunakan Metode Sarrus:<br>" +
+                "$\\det(A) = (1\\cdot3\\cdot1 + 2\\cdot1\\cdot2 + 0\\cdot0\\cdot1) - (0\\cdot3\\cdot2 + 1\\cdot1\\cdot1 + 2\\cdot0\\cdot1)$<br>" +
+                "$= (3 + 4 + 0) - (0 + 1 + 0) = 7 - 1 = 6$."
+            },
+            {
+                topic: "Invers Matriks 2x2",
+                question: "Invers dari matriks $A = \\begin{pmatrix} 3 & 2 \\\\ 4 & 3 \\end{pmatrix}$ adalah...",
+                options: [
+                    "$\\begin{pmatrix} 3 & -2 \\\\ -4 & 3 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -3 & 2 \\\\ 4 & -3 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & 4 \\\\ 2 & 3 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -3 & -2 \\\\ -4 & -3 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 1 & -2 \\\\ -4 & 1 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "$\\det(A) = (3)(3) - (2)(4) = 9 - 8 = 1$.<br>" +
+                "Invers: $A^{-1} = \\frac{1}{\\det(A)} \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix} = \\frac{1}{1} \\begin{pmatrix} 3 & -2 \\\\ -4 & 3 \\end{pmatrix} = \\begin{pmatrix} 3 & -2 \\\\ -4 & 3 \\end{pmatrix}$."
+            },
+            {
+                topic: "Invers Matriks 2x2",
+                question: "Invers dari matriks $B = \\begin{pmatrix} 4 & 1 \\\\ 7 & 2 \\end{pmatrix}$ adalah...",
+                options: [
+                    "$\\begin{pmatrix} 2 & -1 \\\\ -7 & 4 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -2 & 1 \\\\ 7 & -4 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 2 & 1 \\\\ 7 & 4 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 4 & -1 \\\\ -7 & 2 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -2 & -1 \\\\ -7 & -4 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "$\\det(B) = (4)(2) - (1)(7) = 8 - 7 = 1$.<br>" +
+                "$B^{-1} = \\frac{1}{1} \\begin{pmatrix} 2 & -1 \\\\ -7 & 4 \\end{pmatrix} = \\begin{pmatrix} 2 & -1 \\\\ -7 & 4 \\end{pmatrix}$."
+            },
+            {
+                topic: "Persamaan AX=B",
+                question: "Jika $A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 1 \\end{pmatrix}$ dan $B = \\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix}$, tentukan matriks $X$ yang memenuhi $A \\cdot X = B$!",
+                options: [
+                    "$\\begin{pmatrix} 2 \\\\ 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 1 \\\\ 2 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 \\\\ -1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 2 & 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 8 \\\\ 5 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "Bentuk $A \\cdot X = B \\implies X = A^{-1} \\cdot B$.<br>" +
+                "Invers $A$: $\\det(A) = 2(1) - 1(1) = 1 \\implies A^{-1} = \\begin{pmatrix} 1 & -1 \\\\ -1 & 2 \\end{pmatrix}$.<br>" +
+                "$X = \\begin{pmatrix} 1 & -1 \\\\ -1 & 2 \\end{pmatrix} \\begin{pmatrix} 5 \\\\ 3 \\end{pmatrix} = \\begin{pmatrix} 1(5) - 1(3) \\\\ -1(5) + 2(3) \\end{pmatrix} = \\begin{pmatrix} 2 \\\\ 1 \\end{pmatrix}$."
+            },
+            {
+                topic: "Persamaan XA=B",
+                question: "Jika $XA = B$ dengan $A = \\begin{pmatrix} 1 & 2 \\\\ 0 & 1 \\end{pmatrix}$ dan $B = \\begin{pmatrix} 3 & 8 \\\\ 2 & 5 \\end{pmatrix}$, maka matriks $X$ adalah...",
+                options: [
+                    "$\\begin{pmatrix} 3 & 2 \\\\ 2 & 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & -2 \\\\ 2 & -1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 1 & 2 \\\\ 3 & 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & 8 \\\\ 0 & 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 2 & 3 \\\\ 1 & 2 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "Bentuk $X \\cdot A = B \\implies X = B \\cdot A^{-1}$.<br>" +
+                "Invers $A$: $\\det(A) = 1 \\implies A^{-1} = \\begin{pmatrix} 1 & -2 \\\\ 0 & 1 \\end{pmatrix}$.<br>" +
+                "$X = \\begin{pmatrix} 3 & 8 \\\\ 2 & 5 \\end{pmatrix} \\begin{pmatrix} 1 & -2 \\\\ 0 & 1 \\end{pmatrix} = \\begin{pmatrix} 3(1)+8(0) & 3(-2)+8(1) \\\\ 2(1)+5(0) & 2(-2)+5(1) \\end{pmatrix} = \\begin{pmatrix} 3 & 2 \\\\ 2 & 1 \\end{pmatrix}$."
+            },
+            {
+                topic: "Sifat Determinan",
+                question: "Jika $\\det(A) = 4$ dan $A$ adalah matriks berordo $2 \\times 2$, maka nilai $\\det(3A)$ adalah...",
+                options: ["12", "24", "36", "48", "72"],
+                correct: 2,
+                explanation: "Sifat determinan skalar: Jika matriks $A$ berordo $n \\times n$, maka $\\det(k \\cdot A) = k^n \\cdot \\det(A)$.<br>" +
+                "Di sini $n = 2$ dan $k = 3$.<br>" +
+                "$\\det(3A) = 3^2 \\cdot \\det(A) = 9 \\cdot 4 = 36$."
+            },
+            {
+                topic: "Sifat Invers",
+                question: "Jika $A = \\begin{pmatrix} 2 & 3 \\\\ 1 & 4 \\end{pmatrix}$, tentukan nilai $\\det(A^{-1})$!",
+                options: ["5", "-5", "$\\frac{1}{5}$", "$-\\frac{1}{5}$", "$\\frac{2}{5}$"],
+                correct: 2,
+                explanation: "Sifat determinan invers: $\\det(A^{-1}) = \\frac{1}{\\det(A)}$.<br>" +
+                "Determinan $A$: $\\det(A) = 2(4) - 3(1) = 8 - 3 = 5$.<br>" +
+                "Maka $\\det(A^{-1}) = \\frac{1}{5}$."
+            },
+            {
+                topic: "Operasi Gabungan",
+                question: "Diketahui $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$. Nilai dari $A^2 - 5A$ adalah...",
+                options: [
+                    "$\\begin{pmatrix} 2 & 0 \\\\ 0 & 2 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 0 & 0 \\\\ 0 & 0 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 2 & 2 \\\\ 2 & 2 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} -2 & 0 \\\\ 0 & -2 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "Hitung $A^2 = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix} \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix} = \\begin{pmatrix} 7 & 10 \\\\ 15 & 22 \\end{pmatrix}$.<br>" +
+                "Hitung $5A = \\begin{pmatrix} 5 & 10 \\\\ 15 & 20 \\end{pmatrix}$.<br>" +
+                "$A^2 - 5A = \\begin{pmatrix} 7-5 & 10-10 \\\\ 15-15 & 22-20 \\end{pmatrix} = \\begin{pmatrix} 2 & 0 \\\\ 0 & 2 \\end{pmatrix} = 2I$."
+            },
+            {
+                topic: "Transpose Operasi",
+                question: "Jika $A = \\begin{pmatrix} 1 & 4 \\\\ 2 & 3 \\end{pmatrix}$ dan $B = \\begin{pmatrix} 2 & -1 \\\\ 0 & 5 \\end{pmatrix}$, tentukan $(A+B)^T$!",
+                options: [
+                    "$\\begin{pmatrix} 3 & 2 \\\\ 3 & 8 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & 3 \\\\ 2 & 8 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 8 & 2 \\\\ 3 & 3 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 3 & -2 \\\\ 3 & 8 \\end{pmatrix}$",
+                    "$\\begin{pmatrix} 2 & 3 \\\\ 8 & 3 \\end{pmatrix}$"
+                ],
+                correct: 0,
+                explanation: "Hitung $A + B = \\begin{pmatrix} 1+2 & 4+(-1) \\\\ 2+0 & 3+5 \\end{pmatrix} = \\begin{pmatrix} 3 & 3 \\\\ 2 & 8 \\end{pmatrix}$.<br>" +
+                "Lalu transpose $(A+B)^T = \\begin{pmatrix} 3 & 2 \\\\ 3 & 8 \\end{pmatrix}$."
+            },
+            {
+                topic: "Aplikasi SPLDV",
+                question: "Diberikan sistem persamaan $2x + 3y = 8$ dan $x - 2y = -3$. Jika diubah ke matriks $A \\begin{pmatrix} x \\\\ y \\end{pmatrix} = B$, tentukan $\\det(A)$!",
+                options: ["7", "-7", "1", "-1", "-11"],
+                correct: 1,
+                explanation: "Matriks koefisien $A = \\begin{pmatrix} 2 & 3 \\\\ 1 & -2 \\end{pmatrix}$.<br>" +
+                "Determinan $\\det(A) = (2)(-2) - (3)(1) = -4 - 3 = -7$."
+            },
+            {
+                topic: "Matriks Simetris",
+                question: "Matriks $A = \\begin{pmatrix} 2 & x+1 \\\\ 5 & 4 \\end{pmatrix}$ adalah matriks simetris (di mana $A = A^T$). Nilai $x$ adalah...",
+                options: ["2", "3", "4", "5", "6"],
+                correct: 2,
+                explanation: "Matriks simetris memenuhi $A = A^T$, sehingga elemen $a_{12} = a_{21}$.<br>" +
+                "$x + 1 = 5 \\implies x = 4$."
+            },
+            {
+                topic: "Sifat Perkalian Transpose",
+                question: "Manakah pernyataan sifat transpose perkalian matriks yang selalu BENAR?",
+                options: [
+                    "$(A \\cdot B)^T = A^T \\cdot B^T$",
+                    "$(A \\cdot B)^T = B^T \\cdot A^T$",
+                    "$(A \\cdot B)^T = A \\cdot B$",
+                    "$(A \\cdot B)^T = A^{-1} \\cdot B^{-1}$",
+                    "$(A \\cdot B)^T = B \\cdot A$"
+                ],
+                correct: 1,
+                explanation: "Sifat teorema transpose perkalian matriks yang benar adalah urutannya dibalik: **$(A \\cdot B)^T = B^T \\cdot A^T$**."
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let currentQuestion = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let checkedStatus = new Array(quizData.length).fill(false);
+
+        // Initialize KaTeX render trigger
+        function triggerMathRender() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError : false
+            });
+        }
+
+        // Tab Switching Logic
+        function switchTab(tab) {
+            const materiView = document.getElementById('view-materi');
+            const kuisView = document.getElementById('view-kuis');
+            const navMateri = document.getElementById('nav-materi');
+            const navKuis = document.getElementById('nav-kuis');
+            const subLinks = document.getElementById('sub-materi-links');
+
+            if (tab === 'materi') {
+                materiView.classList.remove('hidden');
+                kuisView.classList.add('hidden');
+                
+                navMateri.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition font-medium text-white bg-indigo-600 shadow-lg shadow-indigo-600/30";
+                navKuis.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition font-medium text-slate-400 hover:bg-slate-800 hover:text-white";
+                subLinks.classList.remove('hidden');
+            } else {
+                materiView.classList.add('hidden');
+                kuisView.classList.remove('hidden');
+
+                navKuis.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition font-medium text-white bg-indigo-600 shadow-lg shadow-indigo-600/30";
+                navMateri.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition font-medium text-slate-400 hover:bg-slate-800 hover:text-white";
+                subLinks.classList.add('hidden');
+            }
+            closeMobileMenu();
+            setTimeout(triggerMathRender, 50);
+        }
+
+        // --- KUIS ENGINE LOGIC ---
+        function renderPalette() {
+            const palette = document.getElementById('question-palette');
+            palette.innerHTML = '';
+            
+            quizData.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.innerText = idx + 1;
+                btn.onclick = () => jumpToQuestion(idx);
+
+                let bgClass = "bg-slate-100 text-slate-600 hover:bg-slate-200";
+                
+                if (idx === currentQuestion) {
+                    bgClass = "bg-indigo-600 text-white font-bold ring-2 ring-indigo-400";
+                } else if (userAnswers[idx] !== null) {
+                    if (checkedStatus[idx]) {
+                        bgClass = userAnswers[idx] === q.correct ? "bg-emerald-500 text-white" : "bg-rose-500 text-white";
+                    } else {
+                        bgClass = "bg-indigo-100 text-indigo-700 font-semibold border border-indigo-300";
+                    }
+                }
+
+                btn.className = `h-9 w-full rounded-lg text-xs flex items-center justify-center transition ${bgClass}`;
+                palette.appendChild(btn);
+            });
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            document.getElementById('question-badge').innerText = `Soal #${currentQuestion + 1}`;
+            document.getElementById('topic-badge').innerText = q.topic;
+            document.getElementById('question-text').innerHTML = q.question;
+            document.getElementById('quiz-progress-text').innerText = `Soal ${currentQuestion + 1} dari ${quizData.length}`;
+
+            // Render Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+            q.options.forEach((opt, idx) => {
+                const isSelected = userAnswers[currentQuestion] === idx;
+                const isChecked = checkedStatus[currentQuestion];
+                const isCorrect = idx === q.correct;
+
+                let stateStyle = "bg-slate-50 border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/30";
+                
+                if (isSelected) {
+                    stateStyle = "bg-indigo-50 border-indigo-600 ring-2 ring-indigo-500/20";
+                }
+
+                if (isChecked) {
+                    if (isCorrect) {
+                        stateStyle = "bg-emerald-50 border-emerald-500 text-emerald-900 font-semibold";
+                    } else if (isSelected && !isCorrect) {
+                        stateStyle = "bg-rose-50 border-rose-500 text-rose-900";
+                    }
+                }
+
+                const optBtn = document.createElement('div');
+                optBtn.onclick = () => selectOption(idx);
+                optBtn.className = `p-4 rounded-xl border cursor-pointer transition flex items-center space-x-3 ${stateStyle}`;
+                
+                optBtn.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold border ${isSelected ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300'}">
+                        ${optionLabels[idx]}
+                    </span>
+                    <span class="text-sm text-slate-800 flex-1">${opt}</span>
+                    ${isChecked && isCorrect ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : ''}
+                    ${isChecked && isSelected && !isCorrect ? '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>' : ''}
+                `;
+                optionsContainer.appendChild(optBtn);
+            });
+
+            // Update Navigation Buttons State
+            document.getElementById('btn-prev').disabled = currentQuestion === 0;
+            document.getElementById('btn-prev').classList.toggle('opacity-50', currentQuestion === 0);
+
+            // Update Pembahasan Box
+            const pembahasanBox = document.getElementById('pembahasan-box');
+            if (checkedStatus[currentQuestion]) {
+                pembahasanBox.classList.remove('hidden');
+                document.getElementById('pembahasan-text').innerHTML = q.explanation;
+            } else {
+                pembahasanBox.classList.add('hidden');
+            }
+
+            renderPalette();
+            setTimeout(triggerMathRender, 30);
+        }
+
+        function selectOption(idx) {
+            userAnswers[currentQuestion] = idx;
+            loadQuestion();
+        }
+
+        function checkAnswer() {
+            if (userAnswers[currentQuestion] === null) {
+                alert("Silakan pilih salah satu jawaban terlebih dahulu!");
+                return;
+            }
+            checkedStatus[currentQuestion] = true;
+            loadQuestion();
+
+            // If all answered, option to finish
+            checkAllCompleted();
+        }
+
+        function navigateQuestion(dir) {
+            currentQuestion += dir;
+            if (currentQuestion < 0) currentQuestion = 0;
+            if (currentQuestion >= quizData.length) {
+                currentQuestion = quizData.length - 1;
+                showSummary();
+                return;
+            }
+            loadQuestion();
+        }
+
+        function jumpToQuestion(idx) {
+            currentQuestion = idx;
+            document.getElementById('question-card').classList.remove('hidden');
+            document.getElementById('quiz-summary-card').classList.add('hidden');
+            loadQuestion();
+        }
+
+        function checkAllCompleted() {
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            if (answeredCount === quizData.length) {
+                showSummary();
+            }
+        }
+
+        function showSummary() {
+            let correctCount = 0;
+            quizData.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) correctCount++;
+            });
+
+            const score = Math.round((correctCount / quizData.length) * 100);
+
+            document.getElementById('question-card').classList.add('hidden');
+            document.getElementById('quiz-summary-card').classList.remove('hidden');
+
+            document.getElementById('summary-score').innerText = score;
+            document.getElementById('summary-correct').innerText = correctCount;
+            document.getElementById('summary-wrong').innerText = quizData.length - correctCount;
+
+            let feedback = "";
+            if (score === 100) feedback = "🎉 Sempurna! Kamu telah menguasai konsep matriks dengan sangat baik!";
+            else if (score >= 75) feedback = "👍 Bagus sekali! Pemahaman matriks kamu sudah matang!";
+            else if (score >= 50) feedback = "💪 Lumayan! Coba pelajari lagi bagian pembahasan soal yang salah.";
+            else feedback = "📚 Jangan menyerah! Baca kembali menu 'Materi Lengkap' lalu coba kuis ini lagi.";
+
+            document.getElementById('summary-feedback').innerText = feedback;
+        }
+
+        function reviewQuiz() {
+            document.getElementById('quiz-summary-card').classList.add('hidden');
+            document.getElementById('question-card').classList.remove('hidden');
+            currentQuestion = 0;
+            loadQuestion();
+        }
+
+        function resetQuiz() {
+            userAnswers = new Array(quizData.length).fill(null);
+            checkedStatus = new Array(quizData.length).fill(false);
+            currentQuestion = 0;
+            document.getElementById('quiz-summary-card').classList.add('hidden');
+            document.getElementById('question-card').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        // --- LIVE MATRIX CALCULATOR IN THEORY ---
+        function calculateMatrixLive() {
+            const a11 = parseFloat(document.getElementById('calc-a11').value) || 0;
+            const a12 = parseFloat(document.getElementById('calc-a12').value) || 0;
+            const a21 = parseFloat(document.getElementById('calc-a21').value) || 0;
+            const a22 = parseFloat(document.getElementById('calc-a22').value) || 0;
+
+            const b11 = parseFloat(document.getElementById('calc-b11').value) || 0;
+            const b12 = parseFloat(document.getElementById('calc-b12').value) || 0;
+            const b21 = parseFloat(document.getElementById('calc-b21').value) || 0;
+            const b22 = parseFloat(document.getElementById('calc-b22').value) || 0;
+
+            const op = document.getElementById('calc-op').value;
+            const bContainer = document.getElementById('calc-b-container');
+            const resultDiv = document.getElementById('calc-result');
+
+            let mathTex = "";
+
+            if (op === "detA") {
+                bContainer.classList.add('opacity-30', 'pointer-events-none');
+                const det = (a11 * a22) - (a12 * a21);
+                mathTex = `\\det(A) = (${a11} \\cdot ${a22}) - (${a12} \\cdot ${a21}) = ${det}`;
+            } else {
+                bContainer.classList.remove('opacity-30', 'pointer-events-none');
+                if (op === "add") {
+                    mathTex = `A + B = \\begin{pmatrix} ${a11 + b11} & ${a12 + b12} \\\\ ${a21 + b21} & ${a22 + b22} \\end{pmatrix}`;
+                } else if (op === "subtract") {
+                    mathTex = `A - B = \\begin{pmatrix} ${a11 - b11} & ${a12 - b12} \\\\ ${a21 - b21} & ${a22 - b22} \\end{pmatrix}`;
+                } else if (op === "multiply") {
+                    const c11 = (a11 * b11) + (a12 * b21);
+                    const c12 = (a11 * b12) + (a12 * b22);
+                    const c21 = (a21 * b11) + (a22 * b21);
+                    const c22 = (a21 * b12) + (a22 * b22);
+                    mathTex = `A \\times B = \\begin{pmatrix} ${c11} & ${c12} \\\\ ${c21} & ${c22} \\end{pmatrix}`;
+                }
+            }
+
+            resultDiv.innerHTML = `$${mathTex}$`;
+            triggerMathRender();
+        }
+
+        // --- MOBILE NAVIGATION TOGGLE ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        function toggleMobileMenu() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        }
+
+        function closeMobileMenu() {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        sidebarOverlay.addEventListener('click', closeMobileMenu);
+
+        // --- INIT ON LOAD ---
+        window.onload = function() {
+            calculateMatrixLive();
+            loadQuestion();
+            setTimeout(triggerMathRender, 100);
+        };
+    </script>
+</body>
+</html>
